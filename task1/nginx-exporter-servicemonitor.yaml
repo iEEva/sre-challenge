@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-exporter
+  namespace: monitoring
+  labels:
+    release: kube-monitoring
+spec:
+  selector:
+    matchLabels:
+      app: nginx-exporter
+  namespaceSelector:
+    matchNames:
+      - wordpress
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 15s

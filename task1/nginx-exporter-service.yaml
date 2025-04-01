@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-exporter
+  namespace: wordpress
+  labels:
+    app: nginx-exporter
+spec:
+  selector:
+    app: wordpress-nginx
+  ports:
+    - name: metrics
+      port: 9113
+      targetPort: 9113
