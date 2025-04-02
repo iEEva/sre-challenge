@@ -57,3 +57,51 @@ These enable permanent access to services via:
 - NGINX Exporter → `http://localhost:9113`
 
 ---
+
+⚙️ Why These Technologies Were Chosen
+
+📘 WordPress
+
+A widely used, open-source content management system. Also, this is the CMS the SRE role is related to. 
+
+🧱 NGINX
+
+Used as a high-performance web server and reverse proxy. In this project:
+
+Serves WordPress (via PHP-FPM)
+
+Exposes NGINX metrics through /nginx_status for monitoring
+
+Lightweight and production-ready
+
+🗃️ MySQL
+
+Relational database used by WordPress. Deployed as a Kubernetes pod for:
+
+Local database persistence
+
+Integration with WordPress via environment variables
+
+📈 Grafana
+
+Provides dashboards and visualization for metrics collected from NGINX, WordPress, and the cluster.
+
+Highly customizable
+
+Rich community dashboards
+
+Easy integration with Prometheus
+
+Used in our Infrastructure
+
+📡 Prometheus
+
+Open-source metrics collection and alerting toolkit. Monitors:
+
+NGINX exporter (custom metrics)
+
+Cluster metrics via metrics-server
+
+WordPress performance
+
+Together, these components form a mini production-grade stack. Probably something similar (at least a little) to we have
