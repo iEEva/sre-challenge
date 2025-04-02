@@ -1,9 +1,8 @@
 ## 📂 Folder Descriptions
 
 ### 📁 Info
+- Access info with links and ports
 
-**Contents:**
-- Access info
 ---
 
 ### 📁 Yamls
