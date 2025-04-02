@@ -1,19 +1,9 @@
-# 📁 Project Structure Overview
-
-This project contains a Minikube-based WordPress deployment with monitoring and observability features.  
-Files are organized into clearly separated folders to improve readability, maintainability, and portability.
-
----
-
 ## 📂 Folder Descriptions
 
 ### 📁 Info
 
-Documentation, setup notes, and reference materials used during the deployment process.
-
 **Contents:**
-- Authentication and access info
-
+- Access info
 ---
 
 ### 📁 Yamls
@@ -27,8 +17,8 @@ All Kubernetes resource definitions — used to define and manage cluster compon
 - `nginx-config.yaml` – NGINX config with `/nginx_status` for metrics
 - `nginx-exporter-service.yaml` – Exposes Prometheus NGINX metrics
 - `nginx-exporter-servicemonitor.yaml` – Enables Prometheus scraping
-- `grafana.yaml` – Standalone Grafana deployment configuration (was installed via Helm initially) 
-It was installed via Helm ( helm install kube-monitoring prometheus-community/kube-prometheus-stack --namespace monitoring )
+- `grafana.yaml` – Grafana deployment configuration
+It was installed via Helm initially ( helm install kube-monitoring prometheus-community/kube-prometheus-stack --namespace monitoring )
 and exported via:
 helm template grafana prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
@@ -96,7 +86,9 @@ Used in our Infrastructure
 
 📡 Prometheus
 
-Open-source metrics collection and alerting toolkit. Monitors:
+Open-source metrics collection and alerting toolkit. 
+
+Monitors:
 
 NGINX exporter (custom metrics)
 
@@ -104,4 +96,4 @@ Cluster metrics via metrics-server
 
 WordPress performance
 
-Together, these components form a mini production-grade stack. Probably something similar (at least a little) to we have
+Together, these components form a mini production-grade stack. Probably something similar (at least a little) to we have and I wanted to try replicating it a little.
