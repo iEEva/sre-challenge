@@ -1,6 +1,6 @@
 ## Folder Descriptions
 
-### Info
+### Ports
 - Contains general access info, notes, port mappings, and useful URLs.
 - Helps keep track of local services and setup commands.
 
