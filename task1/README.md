@@ -4,7 +4,7 @@
 
 >>>📂 Folders & Their Purpose
 
-###📁 Info
+📁 Info
 
   This folder contains documentation, notes, and supporting reference materials used during the deployment and configuration process.
 
@@ -18,7 +18,7 @@
 
   Authentication info or access instructions
 
-###📁 Yamls
+📁 Yamls
 
   This folder holds all Kubernetes YAML files used to define and manage the cluster resources.
   
@@ -38,7 +38,7 @@
   
   Any supporting ConfigMaps, Secrets, or Service definitions
 
-###📁 Forwarders
+📁 Forwarders
 
   This folder includes scripts and systemd service definitions to make port-forwarding persistent across restarts.
   
