@@ -1,4 +1,4 @@
-# Screenshots
+# Screenshots of working services installed locally
 
 ### Default NGINX Page
 ![Default NGINX](./defaultnginx.jpg)
