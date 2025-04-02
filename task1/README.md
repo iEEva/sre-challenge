@@ -1,60 +1,55 @@
->>>📁 Project Structure Overview
+# 📁 Project Structure Overview
 
-  This project contains a Minikube-based WordPress deployment with monitoring and observability features. Files are organized into clearly separated folders to improve readability, maintainability, and portability.
+This project contains a Minikube-based WordPress deployment with monitoring and observability features.  
+Files are organized into clearly separated folders to improve readability, maintainability, and portability.
 
->>>📂 Folders & Their Purpose
+---
 
-📁 Info
+## 📂 Folder Descriptions
 
-  This folder contains documentation, notes, and supporting reference materials used during the deployment and configuration process.
+### 📁 Info
 
-  Typical contents:
+Documentation, setup notes, and reference materials used during the deployment process.
 
-  Setup instructions
+**Contents:**
+- Setup instructions
+- Troubleshooting and debug commands
+- Notes on `systemd` port-forward services
+- Authentication and access info
 
-  Commands and debug tips
+---
 
-  References for systemd services or networking
+### 📁 Yamls
 
-  Authentication info or access instructions
+All Kubernetes resource definitions — used to define and manage cluster components.
 
-📁 Yamls
+**Contents:**
+- `wordpress.yaml` – WordPress deployment using Apache
+- `wordpress-nginx.yaml` – WordPress deployment using NGINX + PHP-FPM
+- `mysql.yaml` – MySQL database pod and service
+- `nginx-config.yaml` – NGINX config with `/nginx_status` for metrics
+- `nginx-exporter-service.yaml` – Exposes Prometheus NGINX metrics
+- `nginx-exporter-servicemonitor.yaml` – Enables Prometheus scraping
+- Secrets, ConfigMaps, and other supporting resources
 
-  This folder holds all Kubernetes YAML files used to define and manage the cluster resources.
-  
-  Typical contents:
-  
-  wordpress.yaml – WordPress deployment using Apache
-  
-  wordpress-nginx.yaml – WordPress deployment using NGINX + FPM
-  
-  mysql.yaml – MySQL database pod and service
-  
-  nginx-config.yaml – ConfigMap for custom NGINX config
-  
-  nginx-exporter-service.yaml – Exposes Prometheus NGINX metrics
-  
-  nginx-exporter-servicemonitor.yaml – Enables Prometheus to scrape exporter metrics
-  
-  Any supporting ConfigMaps, Secrets, or Service definitions
+---
 
-📁 Forwarders
+### 📁 Forwarders
 
-  This folder includes scripts and systemd service definitions to make port-forwarding persistent across restarts.
-  
-  Typical contents:
-  
-  Shell scripts like grafana-portforward.sh, wordpress-portforward.sh
-  
-  Corresponding systemd service units: grafana-portforward.service, etc.
-  
-  These ensure consistent access to local services like:
-  
-  Grafana (localhost:30000)
-  
-  Prometheus (localhost:30001)
-  
-  WordPress (localhost:30081 / 30082)
-  
-  NGINX exporter (localhost:9113)
-  
+Scripts and systemd unit files to persist `kubectl port-forward` connections on reboot.
+
+**Contents:**
+- Shell scripts:  
+  - `grafana-portforward.sh`  
+  - `prometheus-portforward.sh`  
+  - `wordpress-portforward.sh`
+- Service files:  
+  - `grafana-portforward.service`, etc.
+
+These enable permanent access to services via:
+- Grafana → `http://localhost:30000`
+- Prometheus → `http://localhost:30001`
+- WordPress → `http://localhost:30081`, `http://localhost:30082`
+- NGINX Exporter → `http://localhost:9113`
+
+---
