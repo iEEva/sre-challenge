@@ -6,7 +6,7 @@
 
 ---
 
-### 📂 Yamls
+### Yamls
 
 All Kubernetes resource definitions used to define and manage cluster components.
 
@@ -59,7 +59,7 @@ Scripts and services to persist `kubectl port-forward` connections on reboot.
 - Matches our infrastructure (e.g. what SREs work with).
 - Familiarity with WordPress management is relevant to the role.
 
-### 🌐 NGINX
+### NGINX
 - Lightweight, fast, production-grade web server.
 - Serves WordPress via PHP-FPM (for the NGINX deployment).
 - Exposes metrics via `/nginx_status` for Prometheus scraping.
