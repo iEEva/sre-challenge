@@ -1,26 +1,6 @@
-# 🔗 Quick Access Links
-
-Here are the key components of my local Minikube WordPress monitoring stack:
-
----
-
-### 📊 Monitoring Tools
-
-- [🔧 Exporter (NGINX metrics)](http://localhost:9113/metrics)  
-- [📈 Grafana](http://localhost:30000)  
-  _Login: `admin` (default password from `prom-operator` chart)_  
-  > Try `nginx_connections_active` in **Explore > Prometheus**
-
-- [📡 Prometheus](http://localhost:30001)
-
----
-
-### 🌐 Web Interfaces
-
-- [🧱 Default NGINX Page](http://localhost:30080)
-- [📘 Apache WordPress](http://localhost:30081)  
-  _User: `x7giftailor`
-
-- [📗 NGINX WordPress](http://localhost:30082)
-
----
+- http://localhost:9113/metrics 				##Exporter
+- http://localhost:30000 					      ##Graphana (admin prom-operator) ((nginx_connections_active to test in Explore>Prometheus))
+- http://localhost:30001 					      ##Prometheus 
+- http://localhost:30080 					      ##Default Nginx page
+- http://localhost:30081 					      ##Apache Wordpress (x7gifatilor	Erusynaqe505)
+- http://localhost:30082 					      ##Nginx Wordpress
