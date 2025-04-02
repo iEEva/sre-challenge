@@ -12,9 +12,6 @@ Files are organized into clearly separated folders to improve readability, maint
 Documentation, setup notes, and reference materials used during the deployment process.
 
 **Contents:**
-- Setup instructions
-- Troubleshooting and debug commands
-- Notes on `systemd` port-forward services
 - Authentication and access info
 
 ---
