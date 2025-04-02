@@ -1,6 +1,6 @@
 🔁 Forwarders Folder
 
-This folder contains port-forwarding scripts and corresponding systemd service files that make Kubernetes services accessible locally — even after a reboot or Minikube restart.
+This folder contains port-forwarding scripts that make Kubernetes services accessible locally — even after a reboot or Minikube restart.
 
 These scripts wrap kubectl port-forward commands to expose key services such as WordPress, Grafana, Prometheus, and NGINX Exporter on fixed localhost ports.
 
