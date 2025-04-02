@@ -1,15 +1,16 @@
-## 📂 Folder Descriptions
+## Folder Descriptions
 
-### 📁 Info
-- Access info with links and ports
+### Info
+- Contains general access info, notes, port mappings, and useful URLs.
+- Helps keep track of local services and setup commands.
 
 ---
 
-### 📁 Yamls
+### 📂 Yamls
 
-All Kubernetes resource definitions — used to define and manage cluster components.
+All Kubernetes resource definitions used to define and manage cluster components.
 
-**Contents:**
+**Includes:**
 - `wordpress.yaml` – WordPress deployment using Apache
 - `wordpress-nginx.yaml` – WordPress deployment using NGINX + PHP-FPM
 - `mysql.yaml` – MySQL database pod and service
@@ -17,82 +18,78 @@ All Kubernetes resource definitions — used to define and manage cluster compon
 - `nginx-exporter-service.yaml` – Exposes Prometheus NGINX metrics
 - `nginx-exporter-servicemonitor.yaml` – Enables Prometheus scraping
 - `grafana.yaml` – Grafana deployment configuration
-It was installed via Helm initially ( helm install kube-monitoring prometheus-community/kube-prometheus-stack --namespace monitoring )
-and exported via:
-helm template grafana prometheus-community/kube-prometheus-stack \
-  --namespace monitoring \
-  --set grafana.enabled=true \
-  --set prometheus.enabled=false \
-  --set alertmanager.enabled=false > Yamls/grafana.yaml
+
+> Grafana was originally installed using Helm:  
+> `helm install kube-monitoring prometheus-community/kube-prometheus-stack --namespace monitoring`  
+> and later exported via:
+> ```bash
+> helm template grafana prometheus-community/kube-prometheus-stack \
+>   --namespace monitoring \
+>   --set grafana.enabled=true \
+>   --set prometheus.enabled=false \
+>   --set alertmanager.enabled=false > Yamls/grafana.yaml
+> ```
 
 ---
 
-### 📁 Forwarders
+### Forwarders
 
-Scripts to persist `kubectl port-forward` connections on reboot.
+Scripts and services to persist `kubectl port-forward` connections on reboot.
 
-**Contents:**
-- Shell scripts:  
-  - `grafana-portforward.sh`  
-  - `prometheus-portforward.sh`  
+**Includes:**
+- Shell scripts:
+  - `grafana-portforward.sh`
+  - `prometheus-portforward.sh`
   - `wordpress-portforward.sh`
-- Service files:  
-  - `grafana-portforward.service`, etc.
+  - `nginx-exporter-portforward.sh`
 
-These enable permanent access to services via:
-- Grafana → `http://localhost:30000`
-- Prometheus → `http://localhost:30001`
-- WordPress → `http://localhost:30081`, `http://localhost:30082`
-- NGINX Exporter → `http://localhost:9113`
+**Purpose:**
+- Enable stable access to services via:
+  - Grafana → `http://localhost:30000`
+  - Prometheus → `http://localhost:30001`
+  - WordPress → `http://localhost:30081`, `http://localhost:30082`
+  - NGINX Exporter → `http://localhost:9113`
 
 ---
 
-⚙️ Why These Technologies Were Chosen
+## Why These Technologies Were Chosen
 
-📘 WordPress
+### WordPress
+- Popular open-source CMS — ideal for containerization.
+- Matches our infrastructure (e.g. what SREs work with).
+- Familiarity with WordPress management is relevant to the role.
 
-A widely used, open-source content management system. Also, this is the CMS the SRE role is related to. 
+### 🌐 NGINX
+- Lightweight, fast, production-grade web server.
+- Serves WordPress via PHP-FPM (for the NGINX deployment).
+- Exposes metrics via `/nginx_status` for Prometheus scraping.
 
-🧱 NGINX
+### MySQL
+- Relational database required by WordPress.
+- Easily deployed as a Kubernetes Pod.
 
-Used as a high-performance web server and reverse proxy. In this project:
+### Grafana
+- Visualizes metrics from Prometheus and NGINX exporter.
+- Widely used in real infrastructure.
+- Highly customizable dashboards and alerting.
+- Used in our own infrastructure — good practical alignment.
 
-Serves WordPress (via PHP-FPM)
+### Prometheus
+- Pull-based metrics collection system.
+- Scrapes from:
+  - NGINX exporter
+  - `metrics-server` for cluster-level metrics
+  - Any custom endpoints (e.g. PHP-FPM)
+- A core monitoring tool in many SRE environments.
 
-Exposes NGINX metrics through /nginx_status for monitoring
+---
 
-Lightweight and production-ready
+## Summary
 
-🗃️ MySQL
+These tools were chosen to simulate a small, production-style environment with:
+- Web hosting (WordPress + Apache/NGINX)
+- Database services (MySQL)
+- Monitoring and observability (Prometheus + Grafana)
+- Real-world SRE tools and practices
 
-Relational database used by WordPress. Deployed as a Kubernetes pod for:
-
-Local database persistence
-
-Integration with WordPress via environment variables
-
-📈 Grafana
-
-Provides dashboards and visualization for metrics collected from NGINX, WordPress, and the cluster.
-
-Highly customizable
-
-Rich community dashboards
-
-Easy integration with Prometheus
-
-Used in our Infrastructure
-
-📡 Prometheus
-
-Open-source metrics collection and alerting toolkit. 
-
-Monitors:
-
-NGINX exporter (custom metrics)
-
-Cluster metrics via metrics-server
-
-WordPress performance
-
-Together, these components form a mini production-grade stack. Probably something similar (at least a little) to we have and I wanted to try replicating it a little.
+> The stack replicates a mini infrastructure like we may encounter at work — giving hands-on practice with the same technologies.
