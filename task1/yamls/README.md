@@ -24,7 +24,7 @@ nginx-ingress.yaml – Optional Ingress resource for routing external traffic
 
 📊 Monitoring Resources
 
-grafana.yaml – Standalone Grafana deployment configuration (if not installed via Helm)
+grafana.yaml – Standalone Grafana deployment configuration (was installed via helm also)
 
 nginx-exporter-service.yaml – Kubernetes Service for NGINX Prometheus Exporter (port 9113)
 
