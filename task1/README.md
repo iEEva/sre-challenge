@@ -27,13 +27,20 @@ All Kubernetes resource definitions — used to define and manage cluster compon
 - `nginx-config.yaml` – NGINX config with `/nginx_status` for metrics
 - `nginx-exporter-service.yaml` – Exposes Prometheus NGINX metrics
 - `nginx-exporter-servicemonitor.yaml` – Enables Prometheus scraping
-- Secrets, ConfigMaps, and other supporting resources
+- `grafana.yaml` – Standalone Grafana deployment configuration (was installed via Helm initially) 
+It was installed via Helm ( helm install kube-monitoring prometheus-community/kube-prometheus-stack --namespace monitoring )
+and exported via:
+helm template grafana prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --set grafana.enabled=true \
+  --set prometheus.enabled=false \
+  --set alertmanager.enabled=false > Yamls/grafana.yaml
 
 ---
 
 ### 📁 Forwarders
 
-Scripts and systemd unit files to persist `kubectl port-forward` connections on reboot.
+Scripts to persist `kubectl port-forward` connections on reboot.
 
 **Contents:**
 - Shell scripts:  
