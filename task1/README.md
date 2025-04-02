@@ -1,4 +1,4 @@
-📁 Project Structure Overview
+###📁 Project Structure Overview
 
 This project contains a Minikube-based WordPress deployment with monitoring and observability features. Files are organized into clearly separated folders to improve readability, maintainability, and portability.
 
