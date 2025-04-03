@@ -8,32 +8,22 @@ Each script wraps a `kubectl port-forward` command and maps Kubernetes services 
 
 ## Folder Contents
 
-### Shell Scripts (`*.sh`)
+### Shell Scripts
 
-Scripts that establish and persist port-forwarding connections:
-
-- `wordpress-portforward.sh`  
-  → Forwards WordPress (Apache or NGINX) to ports:  
-  `http://localhost:30081` / `http://localhost:30082`
-
-- `grafana-portforward.sh`  
-  → Forwards Grafana to:  
-  `http://localhost:30000`
-
-- `prometheus-portforward.sh`  
-  → Forwards Prometheus to:  
-  `http://localhost:30001`
-
-- `nginx-exporter-portforward.sh`  
-  → Forwards NGINX Prometheus Exporter metrics to:  
-  `http://localhost:9113`
+| Script Name                   | Description                                       | Local Access URL(s)                        |
+|------------------------------|---------------------------------------------------|--------------------------------------------|
+| `wordpress-portforward.sh`   | Forwards WordPress (Apache or NGINX)              | `http://localhost:30081` / `http://localhost:30082` |
+| `grafana-portforward.sh`     | Forwards Grafana                                  | `http://localhost:30000`                   |
+| `prometheus-portforward.sh`  | Forwards Prometheus                               | `http://localhost:30001`                   |
+| `nginx-exporter-portforward.sh` | Forwards NGINX Prometheus Exporter metrics    | `http://localhost:9113`                    |
 
 ---
 
 ## Features and Behavior
 
-Each script includes logic to:
+| Feature                                 | Description                                                                 |
+|----------------------------------------|-----------------------------------------------------------------------------|
+| Minikube readiness check               | Scripts wait until Minikube is running before attempting port-forwarding.  |
+| Dynamic pod name detection             | Uses `kubectl` label selectors to find the correct pod dynamically.        |
+| Persistent operation                   | Scripts can run continuously or be managed by `systemd` to survive reboots. |
 
-- **Wait for Minikube to start** before attempting the port-forward  
-- **Dynamically select the correct pod name** using Kubernetes label selectors  
-- Run continuously or under a `systemd` service to persist across reboots  
