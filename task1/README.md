@@ -82,4 +82,4 @@ This setup was built to simulate a **production-style environment** with:
 - Monitoring & Observability (Prometheus + Grafana)  
 - Practical tools used by real SRE teams
 
-> This stack replicates a realistic infrastructure for hands-on learning, configuration, and debugging — helping prepare for real-world operational scenarios.
+> This stack replicates a realistic infrastructure for hands-on learning, configuration, and debugging — helping prepare for real-work operational scenarios.
