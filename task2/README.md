@@ -1,6 +1,7 @@
 
 
 ##Graph
+
 ![Graph Example](alert_example.png)
 
 ## What Each Line Means
