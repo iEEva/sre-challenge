@@ -12,19 +12,6 @@
 | `summary: 'Mysql Transaction Waits'`                                                      | A short, descriptive title for the alert. Ideal for use in notifications or dashboard alert tables.                                                                                                         |
 | `description: 'There are {{ $value | humanize }} MySQL connections waiting for a stale transaction to release.'` | Provides a clear explanation of the alert and includes dynamic data (e.g., how many connections are affected). Helps responders quickly understand the issue.                                 |
 
-
-## Alert Rule
-
-- alert: MysqlTransactionDeadlock
-  expr: increase(mysql_global_status_innodb_row_lock_waits[2m]) > 0
-  for: 3m
-  labels:
-    severity: warning
-  annotations:
-    dashboard: database-metrics
-    summary: 'Mysql Transaction Waits'
-    description: 'There are {{ $value | humanize }} MySQL connections waiting for a stale transaction to release.'
-
 ## 🔍 Alert Investigation & Optimization
 
 This section explains how to handle and improve the `MysqlTransactionDeadlock` alert.
