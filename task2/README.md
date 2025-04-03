@@ -1,25 +1,3 @@
-# Prometheus Alert: `MysqlTransactionDeadlock`
-
-This Prometheus alert detects potential **MySQL InnoDB row-level lock contention**, which can indicate transaction blocking or performance issues.
-
----
-
-## Alert Rule
-
-## 🔔 Alert Rule
-
-```yaml
-- alert: MysqlTransactionDeadlock
-  expr: increase(mysql_global_status_innodb_row_lock_waits[2m]) > 0
-  for: 3m
-  labels:
-    severity: warning
-  annotations:
-    dashboard: database-metrics
-    summary: 'Mysql Transaction Waits'
-    description: 'There are {{ $value | humanize }} MySQL connections waiting for a stale transaction to release.'
-
-
 ## What Each Line Means
 
 | Line                                                                                       | Explanation                                                                                                                                                                                                 |
