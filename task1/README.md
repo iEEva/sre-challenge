@@ -1,27 +1,35 @@
 ## Folder Descriptions
 
+---
+
 ### Ports
-- Contains general access info, notes, port mappings, and useful URLs.
-- Helps keep track of local services and setup commands.
+
+| Purpose | Description |
+|---------|-------------|
+| Access Info | Contains general notes, port mappings, service URLs, and access-related details. |
+| Use Case | Helps track local service endpoints and handy startup commands. |
 
 ---
 
-### Yamls
+### Yamls (Kubernetes Resource Definitions)
 
-All Kubernetes resource definitions used to define and manage cluster components.
+All Kubernetes YAML definitions used to deploy and manage application components.
 
-**Includes:**
-- `wordpress.yaml` – WordPress deployment using Apache
-- `wordpress-nginx.yaml` – WordPress deployment using NGINX + PHP-FPM
-- `mysql.yaml` – MySQL database pod and service
-- `nginx-config.yaml` – NGINX config with `/nginx_status` for metrics
-- `nginx-exporter-service.yaml` – Exposes Prometheus NGINX metrics
-- `nginx-exporter-servicemonitor.yaml` – Enables Prometheus scraping
-- `grafana.yaml` – Grafana deployment configuration
+| File Name                            | Description |
+|-------------------------------------|-------------|
+| `wordpress.yaml`                    | WordPress deployment using Apache. |
+| `wordpress-nginx.yaml`              | WordPress deployment using NGINX + PHP-FPM. |
+| `mysql.yaml`                        | MySQL Pod and Service definition. |
+| `nginx-config.yaml`                 | NGINX config exposing `/nginx_status` for metrics. |
+| `nginx-exporter-service.yaml`       | Service that exposes NGINX Prometheus Exporter. |
+| `nginx-exporter-servicemonitor.yaml`| Prometheus `ServiceMonitor` for scraping NGINX metrics. |
+| `grafana.yaml`                      | Grafana deployment config (exported from Helm). |
 
-> Grafana was originally installed using Helm:  
-> `helm install kube-monitoring prometheus-community/kube-prometheus-stack --namespace monitoring`  
-> and later exported via:
+> Grafana was originally installed using Helm:
+> ```bash
+> helm install kube-monitoring prometheus-community/kube-prometheus-stack --namespace monitoring
+> ```
+> And later exported via:
 > ```bash
 > helm template grafana prometheus-community/kube-prometheus-stack \
 >   --namespace monitoring \
@@ -34,62 +42,44 @@ All Kubernetes resource definitions used to define and manage cluster components
 
 ### Forwarders
 
-Scripts and services to persist `kubectl port-forward` connections on reboot.
+Scripts that automate and persist `kubectl port-forward` connections even after reboot.
 
-**Includes:**
-- Shell scripts:
-  - `grafana-portforward.sh`
-  - `prometheus-portforward.sh`
-  - `wordpress-portforward.sh`
-  - `nginx-exporter-portforward.sh`
+| Included Scripts | Description |
+|------------------|-------------|
+| `grafana-portforward.sh`            | Forwards Grafana to `http://localhost:30000`. |
+| `prometheus-portforward.sh`         | Forwards Prometheus to `http://localhost:30001`. |
+| `wordpress-portforward.sh`          | WordPress (Apache) at `http://localhost:30081`. |
+| `wordpress-nginx-portforward.sh`    | WordPress (NGINX) at `http://localhost:30082`. |
+| `nginx-portforward.sh`              | Forwards standalone NGINX (custom port). |
+| `nginx-exporter-portforward.sh`     | Exposes NGINX Prometheus Exporter at `http://localhost:9113`. |
 
-**Purpose:**
-- Enable stable access to services via:
-  - Grafana → `http://localhost:30000`
-  - Prometheus → `http://localhost:30001`
-  - WordPress → `http://localhost:30081`, `http://localhost:30082`
-  - NGINX Exporter → `http://localhost:9113`
+| Feature | Description |
+|---------|-------------|
+| Port-forward persistence | Designed to work with `systemd` or manually in background. |
+| Dynamic pod resolution | Uses label selectors to identify correct pods. |
+| Wait logic | Checks that Minikube is running before starting the forward. |
 
 ---
 
 ## Why These Technologies Were Chosen
 
-### WordPress
-- Popular open-source CMS — ideal for containerization.
-- Matches our infrastructure (e.g. what SREs work with).
-- Familiarity with WordPress management is relevant to the role.
-
-### NGINX
-- Lightweight, fast, production-grade web server.
-- Serves WordPress via PHP-FPM (for the NGINX deployment).
-- Exposes metrics via `/nginx_status` for Prometheus scraping.
-
-### MySQL
-- Relational database required by WordPress.
-- Easily deployed as a Kubernetes Pod.
-
-### Grafana
-- Visualizes metrics from Prometheus and NGINX exporter.
-- Widely used in real infrastructure.
-- Highly customizable dashboards and alerting.
-- Used in our own infrastructure — good practical alignment.
-
-### Prometheus
-- Pull-based metrics collection system.
-- Scrapes from:
-  - NGINX exporter
-  - `metrics-server` for cluster-level metrics
-  - Any custom endpoints (e.g. PHP-FPM)
-- A core monitoring tool in many SRE environments.
+| Technology | Why It Was Chosen |
+|------------|-------------------|
+| **WordPress** | Popular CMS, container-friendly, highly relevant to infra/SRE roles. |
+| **NGINX** | Lightweight, fast, and integrates well with PHP-FPM for WordPress. Offers `/nginx_status` endpoint for Prometheus metrics. |
+| **MySQL** | Required by WordPress; easy to deploy and monitor in Kubernetes. |
+| **Grafana** | Industry-standard for dashboards, alerting, and metric visualization. Used across real-world infra setups. |
+| **Prometheus** | Pull-based monitoring, scrapes metrics from exporters and internal components. A key monitoring tool in most SRE stacks. |
 
 ---
 
 ## Summary
 
-These tools were chosen to simulate a small, production-style environment with:
-- Web hosting (WordPress + Apache/NGINX)
-- Database services (MySQL)
-- Monitoring and observability (Prometheus + Grafana)
-- Real-world SRE tools and practices
+This setup was built to simulate a **production-style environment** with:
 
-> The stack replicates a mini infrastructure like we may encounter at work — giving hands-on practice with the same technologies.
+- Web hosting (WordPress + Apache/NGINX)  
+- Database (MySQL)  
+- Monitoring & Observability (Prometheus + Grafana)  
+- Practical tools used by real SRE teams
+
+> This stack replicates a realistic infrastructure for hands-on learning, configuration, and debugging — helping prepare for real-world operational scenarios.
