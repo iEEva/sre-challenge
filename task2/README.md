@@ -30,7 +30,7 @@
 | `summary: 'Mysql Transaction Waits'`                                                      | A short, descriptive title for the alert. Ideal for use in notifications or dashboard alert tables.                                                                                                         |
 | `description: 'There are {{ $value | humanize }} MySQL connections waiting for a stale transaction to release.'` | Provides a clear explanation of the alert and includes dynamic data (e.g., how many connections are affected). Helps responders quickly understand the issue.                                 |
 
-## 🔍 Alert Investigation & Optimization
+## Alert Investigation & Optimization
 
 This section explains how to handle and improve the `MysqlTransactionDeadlock` alert.
 
