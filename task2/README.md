@@ -6,6 +6,9 @@ This Prometheus alert detects potential **MySQL InnoDB row-level lock contention
 
 ## Alert Rule
 
+## 🔔 Alert Rule
+
+```yaml
 - alert: MysqlTransactionDeadlock
   expr: increase(mysql_global_status_innodb_row_lock_waits[2m]) > 0
   for: 3m
@@ -15,6 +18,7 @@ This Prometheus alert detects potential **MySQL InnoDB row-level lock contention
     dashboard: database-metrics
     summary: 'Mysql Transaction Waits'
     description: 'There are {{ $value | humanize }} MySQL connections waiting for a stale transaction to release.'
+
 
 ## What Each Line Means
 
