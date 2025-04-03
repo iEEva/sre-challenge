@@ -16,7 +16,7 @@ This Prometheus alert detects potential **MySQL InnoDB row-level lock contention
     summary: 'Mysql Transaction Waits'
     description: 'There are {{ $value | humanize }} MySQL connections waiting for a stale transaction to release.'
 
-## 🧠 What Each Line Means
+## What Each Line Means
 
 | Line                                                                                       | Explanation                                                                                                                                                                                                 |
 |--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
