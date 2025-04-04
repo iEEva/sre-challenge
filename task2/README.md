@@ -117,56 +117,30 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
     → Trace back to actual SQL query, start time, and connection ID.
 
 
-## What I would've changed in the alert
-
-№№ Make the alert name more precise because it is based on the expression: increase(mysql_global_status_innodb_row_lock_waits[2m]) > 0
-It shows row lock waits and does not necessarily indicate a deadlock (which I believe is a separate metric like mysql_global_status_innodb_deadlocks)
-Calling this alert TransactionDeadlock could be misleading.
-
-## Use rate() instead of increase() for smoother results # Both functions are used to analyze counters over time, but they serve different purposes and behave differently
-
-## 1. increase()
-Calculates the total increase in a counter over a range.
-Returns a single value representing how much the counter increased in that time window.
-
-## Example
-increase(mysql_global_status_innodb_row_lock_waits[2m]) # If X row lock waits occurred in the last 2 minutes → it returns X
-
-## Downsides
-Jumpy: If 3 events occur in a bursty second and then nothing for 119 seconds, increase() still returns 3 → might trigger alerts based on short bursts.
-No insight into rate over time — just a raw count.
-
-## 2. rate()
-Computes the per-second average rate of increase over the range.
-Great for smoothing spikes and showing the trend over time.
-
-## Example
-rate(mysql_global_status_innodb_row_lock_waits[2m])
-If 3 row lock waits occurred in 2 minutes, it should show something like:
-3 events / 120 seconds = 0.025 waits/sec.
-
-## Why it’s better for alerting:
-Smoother and more stable than increase().
-Helps you trigger alerts based on sustained problems, not just short spikes.
-
-## Example
-rate(mysql_global_status_innodb_row_lock_waits[2m]) > 0.05
-It should trigger only if you’re seeing more than 1 wait every 20 seconds on average, over 2 minutes — way more reliable than raw burst counts.
-
-## Changing "for"
-I would also change for duration slighly to something like
-for: 5m or for: 10m
-It helps to reduce alert noise from short-lived contention, ensures issue is persistent.
-
-## Editing description
-
-summary: "MySQL: InnoDB Row Lock Waits Detected"
-description: |
-  Detected {{ $value }} row lock waits in MySQL InnoDB over the last X minutes.
-  This usually indicates that transactions are being blocked by others.
-  Check long-running transactions, locking queries, or deadlock risks in `information_schema.innodb_trx` and `innodb_locks`.
-
-It will give immediate understanding and first steps for triage.
+🔧 What I Would've Changed in the Alert
+📌 Summary Table
+Topic	Details
+Alert Name	MysqlTransactionDeadlock is misleading — it's based on row lock waits, not actual deadlocks.
+Suggestion	Rename to MysqlInnoDBRowLockWaits for clarity. Deadlocks have a separate metric: mysql_global_status_innodb_deadlocks.
+📈 Use rate() Instead of increase()
+Function	Description	Example	Reason
+increase()	Calculates total increase over a time range	increase(mysql_global_status_innodb_row_lock_waits[2m]) → returns X if X events	❌ Can be noisy — 3 events in 1 second, then silence = 3. Doesn’t show how frequent the issue is.
+rate()	Computes average per-second rate of increase over time	rate(mysql_global_status_innodb_row_lock_waits[2m]) = 3 / 120 = 0.025	✅ Much smoother. Helps track ongoing issues instead of one-off spikes. Great for alerting.
+🚨 Why rate() > 0.05?
+Expression	Meaning / Threshold
+rate(...[2m]) > 0.05	Triggers if average is more than 6 events per 2 minutes (0.05 x 120 seconds = 6)
+Use case	Triggers only when problem is sustained (e.g. 1 wait every 20 seconds)
+⏱️ Changing for Duration
+Current Setting	Suggested Change	Why
+for: 3m	for: 5m or 10m	Reduces alert flapping. Fires only if condition persists beyond short bursts.
+📝 Improved Alert Description
+Field	Value
+summary	"MySQL: InnoDB Row Lock Waits Detected"
+description	Detected {{ $value }} row lock waits in MySQL InnoDB over the last X minutes.
+This usually indicates that transactions are being blocked by others.
+Check long-running transactions, locking queries, or deadlock risks in:
+- information_schema.innodb_trx
+- information_schema.innodb_locks
 
 ## Final version
 
