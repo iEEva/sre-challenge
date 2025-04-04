@@ -44,12 +44,6 @@ Scripts that automate and persist `kubectl port-forward` connections even after 
 | `nginx-portforward.sh`            | Forwards standalone NGINX (custom port). |
 | `nginx-exporter-portforward.sh`   | Exposes NGINX Prometheus Exporter at `http://localhost:9113`. |
 
-| Feature                  | Description |
-|--------------------------|-------------|
-| Port-forward persistence | Designed to work with `systemd` or manually in background. |
-| Dynamic pod resolution   | Uses label selectors to identify correct pods. |
-| Wait logic               | Checks that Minikube is running before starting the forward. |
-
 ## Why These Technologies Were Chosen
 
 | Technology | Why It Was Chosen |
