@@ -32,7 +32,7 @@
 | `touch "$DEBUG_LOG" "$DEDUP_LOG"`            | Ensures the log files exist; creates them if they don't                                       |
 |                                              |                                                                                               |
 | `log()` function                             | Utility function to prepend timestamps and write logs to both stdout and `DEBUG_LOG`          |
-| `echo "[...]" | tee -a "$DEBUG_LOG"`         | Logs the message with UTC timestamp to screen and file                                        |
+| `echo "[...]" I tee -a "$DEBUG_LOG"`         | Logs the message with UTC timestamp to screen and file                                        |
 |                                              |                                                                                               |
 | `send_slack_notification()` function         | Builds and sends a Slack alert using a webhook                                                |
 | `local pod_name namespace reason`            | Arguments passed to the function: pod name, namespace, failure reason                         |
@@ -47,12 +47,12 @@
 | `should_alert()` function                    | Checks if a deduplication key has been recently alerted; if not, it updates the cache         |
 | `local key="$1"`                             | Unique deduplication key in the form `namespace/pod|reason`                                   |
 | `now=$(date +%s)`                            | Gets current UNIX timestamp in seconds                                                        |
-| `last_line=$(grep "^${key}|" "$DEDUP_LOG")`  | Looks up the latest entry for the key in the dedup log                                        |
+| `last_line=$(grep "^${key}l" "$DEDUP_LOG")`  | Looks up the latest entry for the key in the dedup log                                        |
 | `if [[ -n "$last_line" ]]; then ...`         | If a record exists, extract and compare its timestamp                                         |
 | `diff=$((now - last_time))`                  | Calculates how long ago the last alert was sent                                               |
 | `if (( diff < DEDUP_INTERVAL ))`             | If it was too recent (<10 min), suppress the alert                                            |
-| `sed -i "/^${key}|/d" "$DEDUP_LOG"`          | Otherwise, remove old entry (if any) from log                                                 |
-| `echo "${key}|${now}" >> "$DEDUP_LOG"`       | And append a fresh timestamped entry                                                          |
+| `sed -i "/^${key}l/d" "$DEDUP_LOG"`          | Otherwise, remove old entry (if any) from log                                                 |
+| `echo "${key}l${now}" >> "$DEDUP_LOG"`       | And append a fresh timestamped entry                                                          |
 | `return 0`                                   | Signals that we *should* send an alert                                                        |
 |                                              |                                                                                               |
 | `log "🔁 Polling Kubernetes events..."`       | Initial log message showing the polling and dedup intervals                                   |
