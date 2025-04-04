@@ -66,7 +66,7 @@ lock_id   | lock_trx_id | lock_mode | lock_type | lock_table  | lock_index | loc
     lock_data: The locked row key or identifier
 
 
-$$ innodb_lock_waits
+## innodb_lock_waits
 
 SELECT * FROM information_schema.innodb_lock_waits;
 
