@@ -71,3 +71,29 @@
 | `done`                                       | End of event loop                                                                             |
 | `sleep "$POLL_INTERVAL"`                     | Waits 5 minutes before polling again                                                          |
 | `done`                                       | End of main loop                                                                              |
+
+##Sample Notifier Logs (Deduplication + Alert Flow)
+| Timestamp               | Log Message                                                                                               |
+|-------------------------|-----------------------------------------------------------------------------------------------------------|
+| 2025-04-04 03:46:45 UTC | 🔁 Polling Kubernetes events every 300 seconds (dedup = 600 seconds)...                                  |
+| 2025-04-04 03:46:45 UTC | 🔑 Generated dedup key: default/broken-pod\|BackOff                                                       |
+| 2025-04-04 03:46:45 UTC | ⏱️ Skipping alert for default/broken-pod\|BackOff (last was 30 seconds ago)                               |
+| 2025-04-04 03:46:45 UTC | 🔑 Generated dedup key: default/broken-pod\|Failed                                                        |
+| 2025-04-04 03:46:45 UTC | ⏱️ Skipping alert for default/broken-pod\|Failed (last was 29 seconds ago)                                |
+| 2025-04-04 03:47:01 UTC | 🔁 Polling Kubernetes events every 300 seconds (dedup = 600 seconds)...                                  |
+| 2025-04-04 03:47:01 UTC | 🔑 Generated dedup key: default/broken-pod\|BackOff                                                       |
+| 2025-04-04 03:47:01 UTC | ⏱️ Skipping alert for default/broken-pod\|BackOff (last was 46 seconds ago)                               |
+| 2025-04-04 03:47:01 UTC | 🔑 Generated dedup key: default/broken-pod\|Failed                                                        |
+| 2025-04-04 03:47:01 UTC | ⏱️ Skipping alert for default/broken-pod\|Failed (last was 45 seconds ago)                                |
+| 2025-04-04 03:52:01 UTC | 🔑 Generated dedup key: default/broken-pod\|BackOff                                                       |
+| 2025-04-04 03:52:01 UTC | ⏱️ Skipping alert for default/broken-pod\|BackOff (last was 346 seconds ago)                              |
+| 2025-04-04 03:52:01 UTC | 🔑 Generated dedup key: default/broken-pod\|Failed                                                        |
+| 2025-04-04 03:52:01 UTC | ⏱️ Skipping alert for default/broken-pod\|Failed (last was 345 seconds ago)                               |
+| 2025-04-04 03:57:01 UTC | 🔑 Generated dedup key: default/broken-pod\|BackOff                                                       |
+| 2025-04-04 03:57:01 UTC | ⚠️ ALERTING: default/broken-pod\|BackOff                                                                  |
+| 2025-04-04 03:57:01 UTC | 👉 Payload built: {"text": ":rotating_light: *Kubernetes Pod Failure Detected*\n\`\`\`\nPod: broken-pod\nNamespace: default\nReason: BackOff\nTime: 2025-04-04 03:57:01 UTC UTC\n\`\`\`"} |
+| 2025-04-04 03:57:02 UTC | ✅ Slack message sent successfully                                                                         |
+| 2025-04-04 03:57:02 UTC | 🔑 Generated dedup key: default/broken-pod\|Failed                                                        |
+| 2025-04-04 03:57:02 UTC | ⚠️ ALERTING: default/broken-pod\|Failed                                                                   |
+| 2025-04-04 03:57:02 UTC | 👉 Payload built: {"text": ":rotating_light: *Kubernetes Pod Failure Detected*\n\`\`\`\nPod: broken-pod\nNamespace: default\nReason: Failed\nTime: 2025-04-04 03:57:02 UTC UTC\n\`\`\`"} |
+| 2025-04-04 03:57:02 UTC | ✅ Slack message sent successfully                                                                         |
