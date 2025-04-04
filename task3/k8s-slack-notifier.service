@@ -9,7 +9,7 @@ ExecStart=/usr/local/bin/pod_image_failure_notifier.sh
 Restart=on-failure
 RestartSec=5
 Environment=SLACK_WEBHOOK_URL= ***
-Environment=KUBECONFIG=/home/x7giftailor/.kube/config
+Environment=KUBECONFIG=/home/user/.kube/config
 
 [Install]
 WantedBy=multi-user.target
