@@ -60,9 +60,9 @@ This setup was built to simulate a production-style environment with:
 - Web hosting (WordPress + Apache/NGINX)  
 - Database (MySQL)  
 - Monitoring & Observability (Prometheus + Grafana)  
-- Practical tools used by real SRE teams
+- I assume these tools to be practical tools used by real SRE teams
 
-> This stack replicates a realistic infrastructure for hands-on learning, configuration, and debugging — helping prepare for real-world operational scenarios.
+> This stack replicates a realistic infrastructure for practical learning, configuration, and debugging and also helping to prepare for real-case operational scenarios.
 
 ## Issues Faced and Fixes
 
