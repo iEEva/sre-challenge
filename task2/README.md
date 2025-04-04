@@ -49,8 +49,8 @@ This tells us that at least one InnoDB transaction had to wait for a row lock in
 
 SELECT * FROM information_schema.innodb_locks;
 
-SELECT *	#Selects all columns (lock details).
-FROM information_schema.innodb_locks;	#Lists all row locks currently held by InnoDB transactions.
+|SELECT *	| #Selects all columns (lock details).|
+|FROM information_schema.innodb_locks;|	#Lists all row locks currently held by InnoDB transactions.|
 
     Use Case: Identifies which transactions are blocking others by holding locks on rows or indexes.
 
