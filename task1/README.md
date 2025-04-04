@@ -64,7 +64,7 @@ This setup was built to simulate a production-style environment with:
 
 > This stack replicates a realistic infrastructure for hands-on learning, configuration, and debugging — helping prepare for real-world operational scenarios.
 
-## ❗ Issues Faced and Fixes
+## Issues Faced and Fixes
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
