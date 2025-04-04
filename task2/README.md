@@ -170,7 +170,7 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
   for: 5m
   labels:
     severity: warning
-    team: dba
+    team: SRE
     instance: "{{ $labels.instance }}"
   annotations:
     dashboard: database-metrics
