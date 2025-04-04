@@ -38,11 +38,12 @@ increase(mysql_global_status_innodb_row_lock_waits[2m]) > 0
 
 This tells us that at least one InnoDB transaction had to wait for a row lock in the last 2 minutes.
 ## Root Cause Investigation Steps
-Step	Tool / Query	Purpose
-1	SHOW ENGINE INNODB STATUS\G	Displays InnoDB internal engine report. Look for LATEST DETECTED DEADLOCK and TRANSACTIONS.
-2	SELECT * FROM information_schema.innodb_locks;	Shows row-level locks currently held by active transactions.
-3	SELECT * FROM information_schema.innodb_lock_waits;	Shows which transactions are waiting on locks held by others.
-4	SELECT * FROM information_schema.innodb_trx;	Displays active transactions, their age, state, and running queries.
+| Step | Tool / Query                                       | Purpose                                                                                  |
+|------|----------------------------------------------------|------------------------------------------------------------------------------------------|
+| 1    | `SHOW ENGINE INNODB STATUS\G`                      | Displays InnoDB internal engine report. Look for `LATEST DETECTED DEADLOCK` and `TRANSACTIONS`. |
+| 2    | `SELECT * FROM information_schema.innodb_locks;`   | Shows row-level locks currently held by active transactions.                            |
+| 3    | `SELECT * FROM information_schema.innodb_lock_waits;` | Shows which transactions are waiting on locks held by others.                          |
+| 4    | `SELECT * FROM information_schema.innodb_trx;`     | Displays active transactions, their age, state, and running queries.                    |
 
 ## innodb_locks
 
