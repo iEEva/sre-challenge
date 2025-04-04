@@ -128,7 +128,7 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
 
 ---
 
-## 📈 Use `rate()` Instead of `increase()`
+## Use `rate()` Instead of `increase()`
 
 | Function    | Description                                                                                              | Example                                                                                   | Reason                                                                                                                           |
 |-------------|----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -164,6 +164,7 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
 
 ## Final version
 
+```sh
 - alert: MysqlInnoDBRowLockWaits
   expr: rate(mysql_global_status_innodb_row_lock_waits[2m]) > 0.5
   for: 5m
@@ -178,3 +179,4 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
       Detected {{ $value }} row lock waits in MySQL InnoDB over the last 2 minutes.
       This may indicate that transactions are blocking each other.
       Check running and waiting transactions in `innodb_trx`, `innodb_locks`, and `innodb_lock_waits`.
+```
