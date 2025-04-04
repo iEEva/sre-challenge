@@ -74,8 +74,9 @@ lock_id   | lock_trx_id | lock_mode | lock_type | lock_table  | lock_index | loc
 
 SELECT * FROM information_schema.innodb_lock_waits;
 
-SELECT *	#Selects all columns showing lock wait relationships.
-FROM information_schema.innodb_lock_waits;	#Shows which transaction is waiting on which lock and who’s blocking it.
+| Query | Description |
+|-------|-------------|
+| `SELECT *` <br> `FROM information_schema.innodb_lock_waits;` | Selects all columns showing lock wait relationships. <br> Shows which transaction is waiting on which lock and who’s blocking it. |
 
     Use Case: Helps you see which transactions are blocked, and by whom.
 
@@ -93,10 +94,10 @@ innodb_trx
 
 SELECT * FROM information_schema.innodb_trx;
 
+| Query | Description |
+|-------|-------------|
+| `SELECT *` <br> `FROM information_schema.innodb_trx;` | Selects all columns showing active transactions. <br> Displays all currently running InnoDB transactions, including query text and timestamps. |
 
-SELECT *	#Selects all columns showing active transactions.
-
-FROM information_schema.innodb_trx;	 #Displays all currently running InnoDB transactions, including query text and timestamps.
 
     Use Case: Find long-running or idle transactions, and see what SQL they’re running.
 
