@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-pod    # For Slack notification Test
+  namespace: default
+spec:
+  containers:
+    - name: fake-container
+      image: notarealimage:latest  # intentionally incorrect
+      command: ["sleep", "3600"]

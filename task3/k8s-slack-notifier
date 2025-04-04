@@ -1,0 +1,12 @@
+/var/log/k8s-slack-notifier-debug.log {
+    su root root
+    daily
+    rotate 1
+    missingok
+    notifempty
+    nocompress
+    create 0644 root root
+    postrotate
+        systemctl restart k8s-slack-notifier.service > /dev/null 2>&1 || true
+    endscript
+}
