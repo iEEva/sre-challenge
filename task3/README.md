@@ -72,7 +72,7 @@
 | `sleep "$POLL_INTERVAL"`                     | Waits 5 minutes before polling again                                                          |
 | `done`                                       | End of main loop                                                                              |
 
-##Sample Notifier Logs (Deduplication + Alert Flow)
+##Sample Notifier Logs (Deduplication + Alert Flow) from /var/log/k8s-slack-notifier-debug.log
 | Timestamp               | Log Message                                                                                               |
 |-------------------------|-----------------------------------------------------------------------------------------------------------|
 | 2025-04-04 03:46:45 UTC | 🔁 Polling Kubernetes events every 300 seconds (dedup = 600 seconds)...                                  |
