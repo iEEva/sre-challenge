@@ -30,3 +30,57 @@
 | `summary: 'Mysql Transaction Waits'`                                                      | A short, descriptive title for the alert. Ideal for use in notifications or dashboard alert tables.                                                                                                         |
 |  description:       ...                                                                      | Provides a clear explanation of the alert and includes dynamic data (e.g., how many connections are affected). Helps responders quickly understand the issue.                                 |
 
+## How to Investigate the Reason for the Alert
+
+The alert is based on this PromQL expression:
+increase(mysql_global_status_innodb_row_lock_waits[2m]) > 0 # This tells us that at least one InnoDB transaction had to wait for a row lock in the last 2 minutes. 
+
+Root cause investigation:
+
+#Identifying Waiting Queries
+In MySQL: SHOW ENGINE INNODB STATUS\G #Look for LATEST DETECTED DEADLOCK or TRANSACTIONS section.
+
+Also, can be used:
+SELECT * FROM information_schema.innodb_locks; # Queries the innodb_locks view and shows current row-level locks held by active transactions
+|`SELECT *`                               | Selects all columns (lock details)
+|`FROM information_schema.innodb_locks;`  | From the internal InnoDB view that lists all row locks currently held
+It tells which transactions are holding locks on specific rows or tables and helps trace blocking transactions
+
+Should look like that:
+lock_id	      lock_trx_id	      lock_mode	        lock_type	       lock_table	      lock_index	      lock_data
+123456	      98765	            X	                RECORD	         db.orders	      PRIMARY	          101
+
+lock_trx_id: ID of the transaction holding the lock
+lock_mode: Lock type (X for exclusive, S for shared)
+lock_data: Key or row being locked
+
+SELECT * FROM information_schema.innodb_lock_waits; # Queries the innodb_lock_waits view and displays which transactions are waiting for a lock held by another transaction
+|`SELECT *`                                    |  Get all columns
+|`FROM information_schema.innodb_lock_waits;`  |  From the view that shows lock wait dependencies
+Maps blocking and shows waiting>blocking transaction chains
+Should me something like this:
+requesting_trx_id	      requested_lock_id	      blocking_trx_id	      blocking_lock_id
+98766	                  lock567	                98765	                lock123
+
+requesting_trx_id: Transaction waiting for a lock
+blocking_trx_id: Transaction currently holding the lock
+Combine this with innodb_locks and innodb_trx to trace full locking graphs
+
+SELECT * FROM information_schema.innodb_trx; # Queries the innodb_trx view and shows all currently active InnoDB transactions, including their age, state, SQL, etc.
+|`SELECT *`                             | Get everything about the transaction
+|`FROM information_schema.innodb_trx;`  | From the internal view of active transactions
+Allows to find long-running transactions, idle in transaction states, and locks held and helps to understand transaction behavior over time.
+trx_id	      trx_state	      trx_started	              trx_mysql_thread_id	      trx_query
+98765	        RUNNING	        2025-04-04 14:05:00	      234	                      UPDATE orders SET status='shipped'...
+98766	        LOCK WAIT	      2025-04-04 14:05:03	      235	                      UPDATE orders SET status='shipped'...
+
+To debug a deadlock or long wait:
+
+    Start with innodb_lock_waits
+    → See who is waiting and who is blocking.
+
+    Use innodb_locks
+    → Inspect what locks are involved (on which table/index/row).
+
+    Use innodb_trx
+    → Trace back to actual SQL query, start time, and connection ID.
