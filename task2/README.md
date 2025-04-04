@@ -91,7 +91,8 @@ SELECT * FROM information_schema.innodb_trx;
 
 
 SELECT *	#Selects all columns showing active transactions.
-FROM information_schema.innodb_trx;	#Displays all currently running InnoDB transactions, including query text and timestamps.
+
+FROM information_schema.innodb_trx;	 #Displays all currently running InnoDB transactions, including query text and timestamps.
 
     Use Case: Find long-running or idle transactions, and see what SQL they’re running.
 
