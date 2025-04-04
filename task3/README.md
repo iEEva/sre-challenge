@@ -101,3 +101,8 @@
 
 ## Screenshot from Slack Channel
 ## ![Slack Notification](Slack_notification.png)
+
+
+## Summary
+
+In general I have imitated the situation with the broken pod being failed due to incorrect image and configured the script as the systemd service to run on boot to check pods every 300 seconds and to send alerts every 600 seconds even if they are not unique.
