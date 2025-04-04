@@ -64,21 +64,16 @@ This setup was built to simulate a production-style environment with:
 
 > This stack replicates a realistic infrastructure for hands-on learning, configuration, and debugging — helping prepare for real-world operational scenarios.
 
-## Issues faced
-- /nginx_status not configured
-- Prometheus not scraping exporter
-##Fixes
-- I have exposed /nginx_status in nginx-config.yaml
-- Used -nginx.scrape-uri=http://localhost/nginx_status
-- Added a ServiceMonitor to let Prometheus scrape the metrics
+## ❗ Issues Faced and Fixes
 
-It was kinda hard in general to understand the logic of logs scrapping and pvoviding graphs in Grafana. It did not show any graphs at all initially (even tho I have imitated some events that should generate metrics and be scrapped).
-The issue that I forgot how Graphana actually shows stats and generate graphs. I needed to run a query to Prometheus with the needed value to generate graphs for. For example nginx_active_connections.
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| `/nginx_status` not configured | NGINX did not expose the internal metrics endpoint needed by the exporter. | Added `/nginx_status` in `nginx-config.yaml` using `stub_status` |
+| Prometheus not scraping NGINX exporter | No ServiceMonitor or incorrect exporter URL. | Used `-nginx.scrape-uri=http://localhost/nginx_status` and added a `ServiceMonitor` |
+| No graphs shown in Grafana | Forgot that Grafana needs Prometheus queries to show data. | Ran proper queries like `nginx_active_connections` manually in Grafana |
+| WordPress DB connection error | WordPress pod started before MySQL was ready. | Added `wait-for-mysql.sh` init container to wait for MySQL `3306` using `nc -zv` |
+| WordPress blank pages | Misconfigured `wp-config.php` (e.g. missing quotes, syntax errors). | Fixed syntax issues by correcting lines in `wp-config.php` |
 
-##Also, there were the issue where WordPress pod created before MySQL and I could not understand why WP shows Error Database ... 
-MySQL pod wasn't ready yet when WordPress tried to connect — resulting in a failed DB handshake.
-###Fix
-I have added a wait-for-mysql.sh init container in the wordpress-nginx.yaml that waited for MySQL port 3306 to become reachable using nc -zv.
 
 ##Blank pages
 Faced some blank pages on WP during the setup because of syntax errors in updated wp-config.php
