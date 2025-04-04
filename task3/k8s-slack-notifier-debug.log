@@ -43,11 +43,3 @@ Reason: Failed
 Time: 2025-04-04 02:16:47 UTC UTC
 ```"}
 [2025-04-04 02:16:47 UTC] ✅ Slack message sent successfully
-[2025-04-04 02:16:47 UTC] 🔑 Generated dedup key: default/broken-pod|Failed
-[2025-04-04 02:16:47 UTC] ⏱️ Skipping alert for default/broken-pod|Failed (last was 0 seconds ago)
-[2025-04-04 02:16:47 UTC] 🔑 Generated dedup key: default/broken-pod|Failed
-[2025-04-04 02:16:47 UTC] ⏱️ Skipping alert for default/broken-pod|Failed (last was 0 seconds ago)
-[2025-04-04 02:16:47 UTC] 🔑 Generated dedup key: default/broken-pod|BackOff
-[2025-04-04 02:16:47 UTC] ⏱️ Skipping alert for default/broken-pod|BackOff (last was 1 seconds ago)
-[2025-04-04 02:16:47 UTC] 🔑 Generated dedup key: default/broken-pod|Failed
-[2025-04-04 02:16:47 UTC] ⏱️ Skipping alert for default/broken-pod|Failed (last was 0 seconds ago)
