@@ -93,6 +93,8 @@
 | 2025-04-04 03:57:01 UTC | ⚠️ ALERTING: default/broken-pod\|BackOff                                                                  |
 | 2025-04-04 03:57:01 UTC | 👉 Payload built: {"text": ":rotating_light: *Kubernetes Pod Failure Detected*\n\`\`\`\nPod: broken-pod\nNamespace: default\nReason: BackOff\nTime: 2025-04-04 03:57:01 UTC UTC\n\`\`\`"} |
 | 2025-04-04 03:57:02 UTC | ✅ Slack message sent successfully                                                                         |
+
+![Slack Notification](Slack_notification.png)
 | 2025-04-04 03:57:02 UTC | 🔑 Generated dedup key: default/broken-pod\|Failed                                                        |
 | 2025-04-04 03:57:02 UTC | ⚠️ ALERTING: default/broken-pod\|Failed                                                                   |
 | 2025-04-04 03:57:02 UTC | 👉 Payload built: {"text": ":rotating_light: *Kubernetes Pod Failure Detected*\n\`\`\`\nPod: broken-pod\nNamespace: default\nReason: Failed\nTime: 2025-04-04 03:57:02 UTC UTC\n\`\`\`"} |
