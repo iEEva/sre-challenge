@@ -43,7 +43,7 @@
 | `mapfile -t events < <(minikube kubectl ...)`| Fetches all events from all namespaces, parsed into JSON, stored in `events[]` array          |
 | `for event in "${events[@]}"; do`            | Iterates through each event returned                                                          |
 | `reason=$(jq -r '.reason' <<< "$event")`     | Extracts the event's reason field using `jq`                                                  |
-| `[[ "$reason" =~ ^(BackOff|Failed)$ ]] || continue` | Filters for only failure-related reasons (e.g. image pull issues)                        |
+| `[[ "$reason" =~ ^(BackOff|Failed)$ ]] || continue` | Filters reasons                      |
 | `pod_name=$(jq -r ...)`                      | Extracts the pod name from the event                                                          |
 | `namespace=$(jq -r ...)`                     | Extracts the namespace from the event                                                         |
 | `key="${namespace}/${pod_name}|${reason}"`   | Builds the deduplication key                                                                 |
