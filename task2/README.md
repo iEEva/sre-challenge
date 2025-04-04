@@ -30,11 +30,6 @@
 | `summary: 'Mysql Transaction Waits'`                                                      | A short, descriptive title for the alert. Ideal for use in notifications or dashboard alert tables.                                                                                                         |
 |  description:       ...                                                                      | Provides a clear explanation of the alert and includes dynamic data (e.g., how many connections are affected). Helps responders quickly understand the issue.                                 |
 
-## How to Investigate the Reason for the Alert
-
-The alert is based on this PromQL expression:
-increase(mysql_global_status_innodb_row_lock_waits[2m]) > 0 # This tells us that at least one InnoDB transaction had to wait for a row lock in the last 2 minutes. 
-
 🔍 How to Investigate the Reason for the Alert
 
 The alert is based on this PromQL expression:
@@ -56,11 +51,13 @@ Line	Explanation
 SELECT *	Selects all columns (lock details).
 FROM information_schema.innodb_locks;	Lists all row locks currently held by InnoDB transactions.
 
-    🔹 Use Case: Identifies which transactions are blocking others by holding locks on rows or indexes.
+    Use Case: Identifies which transactions are blocking others by holding locks on rows or indexes.
 
-Sample Output:
-lock_id	lock_trx_id	lock_mode	lock_type	lock_table	lock_index	lock_data
-123456	98765	X	RECORD	db.orders	PRIMARY	101
+✅ Sample Output
+
+lock_id   | lock_trx_id | lock_mode | lock_type | lock_table  | lock_index | lock_data
+----------|-------------|-----------|-----------|-------------|------------|----------
+123456    | 98765       | X         | RECORD    | db.orders   | PRIMARY    | 101
 
     lock_trx_id: Transaction holding the lock
 
@@ -76,11 +73,13 @@ Line	Explanation
 SELECT *	Selects all columns showing lock wait relationships.
 FROM information_schema.innodb_lock_waits;	Shows which transaction is waiting on which lock and who’s blocking it.
 
-    🔹 Use Case: Helps you see which transactions are blocked, and by whom.
+    Use Case: Helps you see which transactions are blocked, and by whom.
 
-Sample Output:
-requesting_trx_id	requested_lock_id	blocking_trx_id	blocking_lock_id
-98766	lock567	98765	lock123
+✅ Sample Output
+
+requesting_trx_id | requested_lock_id | blocking_trx_id | blocking_lock_id
+------------------|-------------------|------------------|------------------
+98766             | lock567           | 98765            | lock123
 
     requesting_trx_id: Transaction waiting on a lock
 
@@ -94,41 +93,20 @@ Line	Explanation
 SELECT *	Selects all columns showing active transactions.
 FROM information_schema.innodb_trx;	Displays all currently running InnoDB transactions, including query text and timestamps.
 
-    🔹 Use Case: Find long-running or idle transactions, and see what SQL they’re running.
+    Use Case: Find long-running or idle transactions, and see what SQL they’re running.
 
-Sample Output:
-trx_id	trx_state	trx_started	trx_mysql_thread_id	trx_query
-98765	RUNNING	2025-04-04 14:05:00	234	UPDATE orders SET status='shipped'...
-98766	LOCK WAIT	2025-04-04 14:05:03	235	UPDATE orders SET status='shipped'...
+✅ Sample Output
+
+trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
+-------|------------|---------------------|----------------------|------------------------------------------------------
+98765  | RUNNING    | 2025-04-04 14:05:00 | 234                  | UPDATE orders SET status='shipped' WHERE id = 101
+98766  | LOCK WAIT  | 2025-04-04 14:05:03 | 235                  | UPDATE orders SET status='shipped' WHERE id = 102
+
 🧭 Recommended Investigation Flow
 Step	Tool	Goal
 1	innodb_lock_waits	Identify which transaction is waiting and who is blocking it.
 2	innodb_locks	Check what is being locked and by whom (row, index, table).
 3	innodb_trx	Understand what query each transaction is running and how long it’s been open.
-
-    requesting_trx_id: Transaction ID that is waiting
-
-    blocking_trx_id: Transaction ID currently holding the lock
-
-🔹 Query: innodb_trx
-
-SELECT * FROM information_schema.innodb_trx;
-
-Line	Explanation
-SELECT *	Selects all columns showing active transactions.
-FROM information_schema.innodb_trx;	Queries currently running transactions inside the InnoDB engine.
-Purpose	Shows transaction IDs, state, age, and current SQL being executed.
-Use Case	Useful to identify long-running or idle-in-transaction sessions that may be causing contention.
-
-Sample Output:
-trx_id	trx_state	trx_started	trx_mysql_thread_id	trx_query
-98765	RUNNING	2025-04-04 14:05:00	234	UPDATE orders SET status='shipped'...
-98766	LOCK WAIT	2025-04-04 14:05:03	235	UPDATE orders SET status='shipped'...
-🔄 Recommended Investigation Flow
-Step	Tool / Query	Goal
-1	innodb_lock_waits	Identify which transaction is waiting and who is blocking it.
-2	innodb_locks	Check which locks are held and what resource (row/index) is locked.
-3	innodb_trx	Understand who’s running what, how long, and what query is responsible.
 
 To debug a deadlock or long wait:
 
