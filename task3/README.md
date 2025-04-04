@@ -15,7 +15,7 @@
 ![Kubernetes Slack Notifier Flow](notifier-flow.png)
 
 
-| Line  (or shortcut, some pipes replaces with "l" so can be tabled correctly)                                     |  Short explanation        |
+| Line  (or shortcut, some pipes replaces with "l" so can be tabled correctly)                                     |  Short explanation  (included in script as well)      |
 |----------------------------------------------|-----------------------------------------------------------------------------------------------|
 | `#!/bin/bash`                                | Shebang to indicate this script should be run with the Bash shell                             |
 | `# Kubernetes Slack Notifier...`             | Comment describing purpose: deduplicated notifications every 10 mins, polling every 5 mins    |
