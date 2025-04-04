@@ -63,3 +63,23 @@ This setup was built to simulate a production-style environment with:
 - Practical tools used by real SRE teams
 
 > This stack replicates a realistic infrastructure for hands-on learning, configuration, and debugging — helping prepare for real-world operational scenarios.
+
+## Issues faced
+- /nginx_status not configured
+- Prometheus not scraping exporter
+##Fixes
+- I have exposed /nginx_status in nginx-config.yaml
+- Used -nginx.scrape-uri=http://localhost/nginx_status
+- Added a ServiceMonitor to let Prometheus scrape the metrics
+
+It was kinda hard in general to understand the logic of logs scrapping and pvoviding graphs in Grafana. It did not show any graphs at all initially (even tho I have imitated some events that should generate metrics and be scrapped).
+The issue that I forgot how Graphana actually shows stats and generate graphs. I needed to run a query to Prometheus with the needed value to generate graphs for. For example nginx_active_connections.
+
+##Also, there were the issue where WordPress pod created before MySQL and I could not understand why WP shows Error Database ... 
+MySQL pod wasn't ready yet when WordPress tried to connect — resulting in a failed DB handshake.
+###Fix
+I have added a wait-for-mysql.sh init container in the wordpress-nginx.yaml that waited for MySQL port 3306 to become reachable using nc -zv.
+
+##Blank pages
+Faced some blank pages on WP during the setup because of syntax errors in updated wp-config.php
+
