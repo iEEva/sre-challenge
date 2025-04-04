@@ -28,7 +28,7 @@
 | `annotations:`                                                                             | Human-readable context shown in dashboards and alerts.                                                                                                                                                      |
 | `dashboard: database-metrics`                                                             | Refers to the name or ID of the related Grafana dashboard where metrics can be explored.                                                                                                                    |
 | `summary: 'Mysql Transaction Waits'`                                                      | A short, descriptive title for the alert. Ideal for use in notifications or dashboard alert tables.                                                                                                         |
-|  description:       ...                                                                      | Provides a clear explanation of the alert and includes dynamic data (e.g., how many connections are affected). Helps responders quickly understand the issue.                                 |
+|  description:       ...                                                                      | Provides a clear explanation of the alert and includes dynamic data (e.g., how many connections are affected). Helps to quickly understand the issue.                                 |
 
 ## How to Investigate the Reason for the Alert
 
