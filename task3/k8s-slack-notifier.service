@@ -8,7 +8,7 @@ Type=simple
 ExecStart=/usr/local/bin/pod_image_failure_notifier.sh
 Restart=on-failure
 RestartSec=5
-Environment=SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+Environment=SLACK_WEBHOOK_URL= ***
 Environment=KUBECONFIG=/home/x7giftailor/.kube/config
 
 [Install]
