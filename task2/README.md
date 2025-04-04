@@ -117,30 +117,50 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
     → Trace back to actual SQL query, start time, and connection ID.
 
 
-🔧 What I Would've Changed in the Alert
-📌 Summary Table
-Topic	Details
-Alert Name	MysqlTransactionDeadlock is misleading — it's based on row lock waits, not actual deadlocks.
-Suggestion	Rename to MysqlInnoDBRowLockWaits for clarity. Deadlocks have a separate metric: mysql_global_status_innodb_deadlocks.
-📈 Use rate() Instead of increase()
-Function	Description	Example	Reason
-increase()	Calculates total increase over a time range	increase(mysql_global_status_innodb_row_lock_waits[2m]) → returns X if X events	❌ Can be noisy — 3 events in 1 second, then silence = 3. Doesn’t show how frequent the issue is.
-rate()	Computes average per-second rate of increase over time	rate(mysql_global_status_innodb_row_lock_waits[2m]) = 3 / 120 = 0.025	✅ Much smoother. Helps track ongoing issues instead of one-off spikes. Great for alerting.
-🚨 Why rate() > 0.05?
-Expression	Meaning / Threshold
-rate(...[2m]) > 0.05	Triggers if average is more than 6 events per 2 minutes (0.05 x 120 seconds = 6)
-Use case	Triggers only when problem is sustained (e.g. 1 wait every 20 seconds)
-⏱️ Changing for Duration
-Current Setting	Suggested Change	Why
-for: 3m	for: 5m or 10m	Reduces alert flapping. Fires only if condition persists beyond short bursts.
-📝 Improved Alert Description
-Field	Value
-summary	"MySQL: InnoDB Row Lock Waits Detected"
-description	Detected {{ $value }} row lock waits in MySQL InnoDB over the last X minutes.
-This usually indicates that transactions are being blocked by others.
-Check long-running transactions, locking queries, or deadlock risks in:
-- information_schema.innodb_trx
-- information_schema.innodb_locks
+## 🔧 What I Would've Changed in the Alert
+
+### 📌 Summary Table
+
+| Topic           | Details                                                                                                                                                              |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Alert Name      | `MysqlTransactionDeadlock` is misleading — it's based on row lock waits, not actual deadlocks.                                                                      |
+| Suggestion      | Rename to `MysqlInnoDBRowLockWaits` for clarity. Deadlocks have a separate metric: `mysql_global_status_innodb_deadlocks`.                                          |
+
+---
+
+## 📈 Use `rate()` Instead of `increase()`
+
+| Function    | Description                                                                                              | Example                                                                                   | Reason                                                                                                                           |
+|-------------|----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `increase()`| Calculates total increase over a time range                                                              | `increase(mysql_global_status_innodb_row_lock_waits[2m])` → returns `X` if X events       | ❌ Can be noisy — 3 events in 1 second, then silence = 3. Doesn’t show how frequent the issue is.                               |
+| `rate()`    | Computes average **per-second rate** of increase over the range                                          | `rate(mysql_global_status_innodb_row_lock_waits[2m]) = 3 / 120 = 0.025`                   | ✅ Much smoother. Helps track ongoing issues instead of one-off spikes. Great for alerting.                                     |
+
+---
+
+## 🚨 Why `rate()` > 0.05?
+
+| Expression                                  | Meaning                                                                                 |
+|---------------------------------------------|-----------------------------------------------------------------------------------------|
+| `rate(...[2m]) > 0.05`                       | Triggers if the average is more than 6 events per 2 minutes (0.05 × 120 seconds = 6)    |
+| Use case                                    | Fires only if problem is sustained (e.g. 1 wait every 20 seconds)                       |
+
+---
+
+## ⏱️ Changing `for:` Duration
+
+| Current | Suggested  | Why                                                                                  |
+|---------|------------|----------------------------------------------------------------------------------------|
+| `for: 3m` | `for: 5m` or `10m` | Reduces alert flapping. Fires only if the condition persists beyond short bursts. |
+
+---
+
+## 📝 Improved Alert Description
+
+| Field       | Value                                                                                               |
+|-------------|-----------------------------------------------------------------------------------------------------|
+| `summary`   | `"MySQL: InnoDB Row Lock Waits Detected"`                                                           |
+| `description` | `Detected {{ $value }} row lock waits in MySQL InnoDB over the last X minutes. This usually indicates that transactions are being blocked by others. Check long-running transactions, locking queries, or deadlock risks in:`<br><br>• `information_schema.innodb_trx`<br>• `information_schema.innodb_locks` |
+
 
 ## Final version
 
