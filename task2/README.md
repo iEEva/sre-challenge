@@ -117,9 +117,9 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
     → Trace back to actual SQL query, start time, and connection ID.
 
 
-## 🔧 What I Would've Changed in the Alert
+## What I Would've Changed in the Alert
 
-### 📌 Summary Table
+### Summary Table
 
 | Topic           | Details                                                                                                                                                              |
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -132,12 +132,12 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
 
 | Function    | Description                                                                                              | Example                                                                                   | Reason                                                                                                                           |
 |-------------|----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| `increase()`| Calculates total increase over a time range                                                              | `increase(mysql_global_status_innodb_row_lock_waits[2m])` → returns `X` if X events       | ❌ Can be noisy — 3 events in 1 second, then silence = 3. Doesn’t show how frequent the issue is.                               |
-| `rate()`    | Computes average **per-second rate** of increase over the range                                          | `rate(mysql_global_status_innodb_row_lock_waits[2m]) = 3 / 120 = 0.025`                   | ✅ Much smoother. Helps track ongoing issues instead of one-off spikes. Great for alerting.                                     |
+| `increase()`| Calculates total increase over a time range                                                              | `increase(mysql_global_status_innodb_row_lock_waits[2m])` → returns `X` if X events       | Can be noisy — 3 events in 1 second, then silence = 3. Doesn’t show how frequent the issue is.                               |
+| `rate()`    | Computes average **per-second rate** of increase over the range                                          | `rate(mysql_global_status_innodb_row_lock_waits[2m]) = 3 / 120 = 0.025`                   | Much smoother. Helps track ongoing issues instead of one-off spikes. Great for alerting.                                     |
 
 ---
 
-## 🚨 Why `rate()` > 0.05?
+## Why `rate()` > 0.05?
 
 | Expression                                  | Meaning                                                                                 |
 |---------------------------------------------|-----------------------------------------------------------------------------------------|
@@ -146,7 +146,7 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
 
 ---
 
-## ⏱️ Changing `for:` Duration
+## Changing `for:` Duration
 
 | Current | Suggested  | Why                                                                                  |
 |---------|------------|----------------------------------------------------------------------------------------|
@@ -154,7 +154,7 @@ trx_id | trx_state  | trx_started         | trx_mysql_thread_id | trx_query
 
 ---
 
-## 📝 Improved Alert Description
+## Improved Alert Description
 
 | Field       | Value                                                                                               |
 |-------------|-----------------------------------------------------------------------------------------------------|
