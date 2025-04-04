@@ -73,8 +73,3 @@ This setup was built to simulate a production-style environment with:
 | No graphs shown in Grafana | Forgot that Grafana needs Prometheus queries to show data. | Ran proper queries like `nginx_active_connections` manually in Grafana |
 | WordPress DB connection error | WordPress pod started before MySQL was ready. | Added `wait-for-mysql.sh` init container to wait for MySQL `3306` using `nc -zv` |
 | WordPress blank pages | Misconfigured `wp-config.php` (e.g. missing quotes, syntax errors). | Fixed syntax issues by correcting lines in `wp-config.php` |
-
-
-##Blank pages
-Faced some blank pages on WP during the setup because of syntax errors in updated wp-config.php
-
