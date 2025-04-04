@@ -63,7 +63,7 @@
 | `[[ "$reason" =~...`                          | Filters reasons                                                                               |
 | `pod_name=$(jq -r ...)`                      | Extracts the pod name from the event                                                          |
 | `namespace=$(jq -r ...)`                     | Extracts the namespace from the event                                                         |
-| `key="${namespace}/${pod_name}|${reason}"`   | Builds the deduplication key                                                                 |
+| `key="${namespace}/${pod_name}${reason}"`   | Builds the deduplication key                                                                 |
 | `log "🔑 Generated dedup key..."`            | Logs the key for visibility                                                                   |
 | `if should_alert "$key"; then`               | Calls the dedup check function                                                                |
 | `send_slack_notification "$pod_name" ...`    | If allowed, sends the actual Slack alert                                                      |
