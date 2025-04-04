@@ -43,6 +43,7 @@ Step	Tool / Query	Purpose
 2	SELECT * FROM information_schema.innodb_locks;	Shows row-level locks currently held by active transactions.
 3	SELECT * FROM information_schema.innodb_lock_waits;	Shows which transactions are waiting on locks held by others.
 4	SELECT * FROM information_schema.innodb_trx;	Displays active transactions, their age, state, and running queries.
+
 ## innodb_locks
 
 SELECT * FROM information_schema.innodb_locks;
